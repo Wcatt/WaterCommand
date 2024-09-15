@@ -1,0 +1,24 @@
+
+locale: en
+doBounceDelay: 500
+check-update:
+  enable: true
+  auto-download: false
+#The key binding can only be the keys in the game, and the server cannot read the keys on the player's client unless a dedicated mod is installed to transmit key messages to the server
+#Future versions will develop client mods to detect player keystrokes.
+#The supported buttons can only be similar to: player squatting shift+player changing assistant f or player squatting shift+player throwing item Q. If these commands are bound, they will overwrite the original operation.
+# Keys: SHIFT_F SHIFT_Q
+Binds:
+  "open_menu":
+    name: 'main_menu'
+    key: SHIFT_F
+    command: '[player] menu'
+    message: '§eopen the main menu§r'
+    permission: none
+    cancelAction: true
+  "open_shop":
+    name: 'shop'
+    key: SHIFT_Q
+    command: '[player] shop'
+    permission: none
+    cancelAction: true

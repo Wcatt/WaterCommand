@@ -1,0 +1,11 @@
+name: WaterCommand
+version: '1.0.2'
+main: waterfun.waterwood.watercommand.WaterCommand
+api-version: '1.20'
+author: waterwood
+commands:
+  WaterCommand:
+    aliases: [WaterCommands,wtcmd,wcd]
+    description: main command
+  WaterCommand.reload:
+    description: reload command

@@ -1,0 +1,28 @@
+locale: zh
+check-update:
+  enable: true
+  auto-download: false
+# 执行指令之间的防抖延迟 单位:毫秒
+doBounceDelay: 100
+
+# 按键绑定的只能是游戏中的按键，服务器无法读取玩家客户端上的按键，除非装了专门的mod传递按键消息给服务器
+# 未来版本会开发客户端MOD，专门检测玩家按键。
+# 支持的按键只能是类似如: 玩家下蹲shift + 玩家换副手 f 或 玩家下蹲shift + 玩家丢出物品 Q 如果绑定这些指令会覆盖原来的操作。
+# Keys: SHIFT_F SHIFT_Q
+# 清注意，SHIFT_F和SHIFT_Q必须在玩家手中有物品才能执行，已知BUG，存在F和Q按键冲突，暂时只能绑定一个按键
+# 如果是SHIFT_Q,那么SHIFT_Q 和 SHIFT_F两者任一一个按下都会触发
+# '[player]'可以更改为[console]表示是终端输出指令，后面必须要紧跟着指令。同时支持papi.
+Binds:
+  "open_menu":
+    name: 'main_menu'
+    key: SHIFT_Q
+    command: '[player]menu'
+    message: '§e你打开了主菜单§r'
+    permission: none
+    cancelAction: true
+  #"open_shop":
+  #  name: 'shop'
+  #  key: SHIFT_F
+  #  command: '[player] shop'
+  #  permission: none
+  #  cancelAction: true
