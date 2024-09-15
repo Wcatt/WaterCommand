@@ -2,7 +2,6 @@ package waterfun.waterwood.watercommand;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.waterwood.BukkitPlugin;
-import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

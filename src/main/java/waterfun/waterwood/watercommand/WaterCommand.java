@@ -12,7 +12,7 @@ public final class WaterCommand extends BukkitPlugin {
         for(String str : LineFontGenerator.parseLineText("WaterCMD")) {
             LogMsg("§6%s§r".formatted(str));
         }
-        LogMsg("§e%s §6Author:§7%s §6Version:§7%s".formatted(getPluginInfo("name")
+        LogMsg("§e%s §6author:§7%s §6version:§7%s".formatted(getPluginInfo("name")
                 , getPluginInfo("author"), getPluginInfo("version")));
         instance = this;
         this.loadConfig(false);

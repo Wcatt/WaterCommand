@@ -1,5 +1,5 @@
 name: WaterCommand
-version: '1.0.2'
+version: '1.1.0'
 main: waterfun.waterwood.watercommand.WaterCommand
 api-version: '1.20'
 author: waterwood

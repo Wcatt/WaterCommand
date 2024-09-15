@@ -1,7 +1,7 @@
 locale: zh
 check-update:
   enable: true
-  auto-download: false
+  auto-download: true
 # 执行指令之间的防抖延迟 单位:毫秒
 doBounceDelay: 100
 

@@ -29,8 +29,7 @@ public abstract class Updater extends WebIO{
                 String latestVersion = jsonObject.get("tag_name").getAsString();
                 double latest = parseVersion(latestVersion);
                 if (currentVersion >= latest) {
-                    return Map.of("downloadLink", "",
-                            "latestVersion", latestVersion, "hasNewVersion", false,
+                    return Map.of("latestVersion", latestVersion,"hasNewVersion", false,
                             "status", 1);
                 } else {
                     return Map.of("downloadLink", downloadLink,

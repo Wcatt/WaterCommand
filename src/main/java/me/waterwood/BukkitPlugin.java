@@ -123,23 +123,20 @@ public class BukkitPlugin extends JavaPlugin implements Plugin {
             return;
         }
         if((boolean)updateInfo.get("hasNewVersion")){
-            String message;
-            if(Boolean.TRUE.equals(config.get("auto-download"))){
+            if(Boolean.TRUE.equals(config.get("check-update.auto-download"))){
                 String link = (String) updateInfo.get("downloadLink");
-                message  = getPluginMessage("new-version-download-message").formatted(updateInfo.get("latestVersion"));
                 try {
-                    String pathDownload = getDefaultFilePath(
-                            getPluginName() + updateInfo.get("latestVersion") +".jar");
+                    LogMsg(getPluginMessage("new-version-download-message").formatted(updateInfo.get("latestVersion")));
+                    String pathDownload = config.getJarDir() + "\\" + getPluginName() + updateInfo.get("latestVersion") +".jar";
                     Updater.dowmloadFile(link, pathDownload);
                     logger.info(Colors.parseColor(getPluginMessage("successfully-download-message").formatted(pathDownload)));
                 } catch (IOException e) {
                     logger.warning(getPluginMessage("error-download-message").formatted(link));
                 }
             }else{
-                message = getPluginMessage("new-version-founded-message").formatted(updateInfo.get("latestVersion"),
-                        updateInfo.get("downloadLink"));
+                LogMsg(getPluginMessage("new-version-founded-message").formatted(updateInfo.get("latestVersion"),
+                        updateInfo.get("downloadLink")));
             }
-            LogMsg(message);
         }else{
             LogMsg(getPluginMessage("latest-version-message"));
         }

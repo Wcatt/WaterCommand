@@ -40,6 +40,7 @@ public  abstract class WebIO {
             while((byteRead = FIS.read(buffer,0,1024))!= -1){
                 out.write(buffer,0,byteRead);
             }
+            FOS.close();
         }
     }
     private static String getFileName(String fileUrl) {
