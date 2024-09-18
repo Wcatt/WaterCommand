@@ -1,7 +1,7 @@
 package waterfun.waterwood.watercommand;
 
 import me.clip.placeholderapi.PlaceholderAPI;
-import me.waterwood.BukkitPlugin;
+import me.waterwood.bukkit.BukkitPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

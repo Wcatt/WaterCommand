@@ -1,6 +1,6 @@
 package waterfun.waterwood.watercommand;
 
-import me.waterwood.BukkitPlugin;
+import me.waterwood.bukkit.BukkitPlugin;
 import org.bukkit.Bukkit;
 
 import java.util.HashSet;
@@ -28,12 +28,12 @@ public class Methods {
                 binds.add(new Bind((String) map.get("name"), (String) map.get("key"), (String) map.get("permission"), (String) map.get("command"), (boolean) map.get("cancelAction"),(String) map.get("message")));
                 count ++;
             }catch (IllegalArgumentException e){
-                plugin.LogMsg(
+                plugin.logMsg(
                         BukkitPlugin.getPluginMessage("error-when-load-binds-message").formatted(entry.getKey())
                 );
             }
         }
-        plugin.LogMsg(
+        plugin.logMsg(
                 BukkitPlugin.getPluginMessage("load-binds-message").formatted(count)
         );
     }

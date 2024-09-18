@@ -1,8 +1,10 @@
 package org.waterwood.plugin;
 
 import org.waterwood.common.Colors;
+import org.waterwood.common.LineFontGenerator;
 import org.waterwood.io.FileConfigProcess;
 import org.waterwood.io.web.Updater;
+import org.waterwood.plugin.Plugin;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -36,26 +38,23 @@ public abstract class WaterPlugin  implements Plugin {
         return logger;
     }
 
-    public void LogMsg(String message){
+    public void logMsg(String message){
         logger.info(Colors.parseColor(message));
     }
 
-    public static FileConfigProcess getConfig(){
+    public static FileConfigProcess getConfigs(){
         return config;
     }
     public static String getPluginMessage(String path){
         return pluginMessages.getString(path);
     }
     public String getPluginName(){
-        return getPluginData("name");
+        return getPluginInfo("name");
     }
     public String getDefaultFilePath(String filePath){
         return config.getPluginFilePath(getPluginName(), filePath);
     }
 
-    public static String getPluginData(String path){
-        return pluginData.getString(path);
-    }
     @Override
     public void loadConfig(boolean loadMessage){
         String lang = Locale.getDefault().getLanguage();
@@ -87,7 +86,6 @@ public abstract class WaterPlugin  implements Plugin {
         }catch(Exception e){
             logger.warning("Error when load config file, missing lang:" + lang + "\nUsing default lang en");
             loadDefaultSource("en");
-            e.printStackTrace();
         }
     }
 
@@ -124,29 +122,34 @@ public abstract class WaterPlugin  implements Plugin {
     public void checkUpdate(String owner, String repositories){
         if (!Boolean.TRUE.equals(config.getBoolean("check-update.enable"))) { return; }
         getLogger().info(getPluginMessage("checking-update-message"));
-        Map<String,Object> updateInfo = Updater.CheckForUpdata(owner, repositories, Updater.parseVersion(getPluginInfo("version")));
-        if(updateInfo == null){
-            getLogger().warning(getPluginMessage("error-check-update-message"));
-            return;
-        }
-        if((boolean)updateInfo.get("hasNewVersion")){
-            if(Boolean.TRUE.equals(config.get("check-update.auto-download"))){
-                String link = (String) updateInfo.get("downloadLink");
-                try {
-                    LogMsg(getPluginMessage("new-version-download-message").formatted(updateInfo.get("latestVersion")));
-                    String pathDownload = config.getJarDir() + "\\" + getPluginName() + updateInfo.get("latestVersion") +".jar";
-                    Updater.dowmloadFile(link, pathDownload);
-                    logger.info(Colors.parseColor(getPluginMessage("successfully-download-message").formatted(pathDownload)));
-                } catch (IOException e) {
-                    logger.warning(getPluginMessage("error-download-message").formatted(link));
-                }
+        Updater.CheckForUpdata(owner, repositories, Updater.parseVersion(getPluginInfo("version"))).thenAccept(updateInfo -> {
+            if(updateInfo == null){
+                getLogger().warning(getPluginMessage("error-check-update-message"));
             }else{
-                LogMsg(getPluginMessage("new-version-founded-message").formatted(updateInfo.get("latestVersion"),
-                        updateInfo.get("downloadLink")));
+                if((boolean)updateInfo.get("hasNewVersion")){
+                    if(Boolean.TRUE.equals(config.get("check-update.auto-download"))){
+                        String link = (String) updateInfo.get("downloadLink");
+                        logMsg(getPluginMessage("new-version-download-message").formatted(updateInfo.get("latestVersion")));
+                        String pathDownload = config.getJarDir() + "\\" + getPluginName() + updateInfo.get("latestVersion") +".jar";
+                        Updater.downloadFile(link, pathDownload).thenAccept(
+                                result -> {
+                                    if(result){
+                                        logger.info(Colors.parseColor(getPluginMessage("successfully-download-message").formatted(pathDownload)));
+                                    }else{
+                                        logger.warning(getPluginMessage("error-download-message").formatted(link));
+
+                                    }
+                                }
+                        );
+                    }else{
+                        logMsg(getPluginMessage("new-version-founded-message").formatted(updateInfo.get("latestVersion"),
+                                updateInfo.get("downloadLink")));
+                    }
+                }else{
+                    logMsg(getPluginMessage("latest-version-message"));
+                }
             }
-        }else{
-            LogMsg(getPluginMessage("latest-version-message"));
-        }
+        });
     }
     public void loadLocale(String lang){
         if(messages.containsKey(lang)) return;
@@ -163,5 +166,12 @@ public abstract class WaterPlugin  implements Plugin {
     public static String getMessage(String key){return messages.get(Locale.getDefault().getLanguage()).getString(key);}
     public static String getPluginInfo(String key){
         return (String)pluginData.get(key);
+    }
+    public void showPluginTitle(String lineTitleDisplay){
+        for(String str : LineFontGenerator.parseLineText(lineTitleDisplay)) {
+            logMsg("§6%s§r".formatted(str));
+        }
+        logMsg("§e%s §6author:§7%s §6version:§7%s".formatted(getPluginInfo("name")
+                , getPluginInfo("author"), getPluginInfo("version")));
     }
 }

@@ -1,7 +1,8 @@
-package me.waterwood;
+package me.waterwood.bukkit;
 
 import org.bukkit.plugin.java.JavaPlugin;
 import org.waterwood.common.Colors;
+import org.waterwood.common.LineFontGenerator;
 import org.waterwood.io.FileConfigProcess;
 import org.waterwood.io.web.Updater;
 import org.waterwood.plugin.Plugin;
@@ -19,7 +20,7 @@ public class BukkitPlugin extends JavaPlugin implements Plugin {
     private static Map<String,FileConfigProcess> messages = new HashMap<>();
     private static  FileConfigProcess pluginData;
     private static boolean locale = false;
-    public void initialize(){
+    public void initialization(){
         if (logger == null){ logger = getLogger();}
         if(pluginData == null){
             try {
@@ -30,8 +31,11 @@ public class BukkitPlugin extends JavaPlugin implements Plugin {
             }
         }
     }
+    public BukkitPlugin(){
+        initialization();
+    }
 
-    public void LogMsg(String message){
+    public void logMsg(String message){
         logger.info(Colors.parseColor(message));
     }
 
@@ -117,29 +121,34 @@ public class BukkitPlugin extends JavaPlugin implements Plugin {
     public void checkUpdate(String owner, String repositories){
         if (!Boolean.TRUE.equals(config.getBoolean("check-update.enable"))) { return; }
         getLogger().info(getPluginMessage("checking-update-message"));
-        Map<String,Object> updateInfo = Updater.CheckForUpdata(owner, repositories, Updater.parseVersion(getPluginInfo("version")));
-        if(updateInfo == null){
-            getLogger().warning(getPluginMessage("error-check-update-message"));
-            return;
-        }
-        if((boolean)updateInfo.get("hasNewVersion")){
-            if(Boolean.TRUE.equals(config.get("check-update.auto-download"))){
-                String link = (String) updateInfo.get("downloadLink");
-                try {
-                    LogMsg(getPluginMessage("new-version-download-message").formatted(updateInfo.get("latestVersion")));
-                    String pathDownload = config.getJarDir() + "\\" + getPluginName() + updateInfo.get("latestVersion") +".jar";
-                    Updater.dowmloadFile(link, pathDownload);
-                    logger.info(Colors.parseColor(getPluginMessage("successfully-download-message").formatted(pathDownload)));
-                } catch (IOException e) {
-                    logger.warning(getPluginMessage("error-download-message").formatted(link));
-                }
+        Updater.CheckForUpdata(owner, repositories, Updater.parseVersion(getPluginInfo("version"))).thenAccept(updateInfo -> {
+            if(updateInfo == null){
+                getLogger().warning(getPluginMessage("error-check-update-message"));
             }else{
-                LogMsg(getPluginMessage("new-version-founded-message").formatted(updateInfo.get("latestVersion"),
-                        updateInfo.get("downloadLink")));
+                if((boolean)updateInfo.get("hasNewVersion")){
+                    if(Boolean.TRUE.equals(config.get("check-update.auto-download"))){
+                        String link = (String) updateInfo.get("downloadLink");
+                        logMsg(getPluginMessage("new-version-download-message").formatted(updateInfo.get("latestVersion")));
+                        String pathDownload = config.getJarDir() + "\\" + getPluginName() + updateInfo.get("latestVersion") +".jar";
+                        Updater.downloadFile(link, pathDownload).thenAccept(
+                                result -> {
+                                    if(result){
+                                        logger.info(Colors.parseColor(getPluginMessage("successfully-download-message").formatted(pathDownload)));
+                                    }else{
+                                        logger.warning(getPluginMessage("error-download-message").formatted(link));
+
+                                    }
+                                }
+                        );
+                    }else{
+                        logMsg(getPluginMessage("new-version-founded-message").formatted(updateInfo.get("latestVersion"),
+                                updateInfo.get("downloadLink")));
+                    }
+                }else{
+                    logMsg(getPluginMessage("latest-version-message"));
+                }
             }
-        }else{
-            LogMsg(getPluginMessage("latest-version-message"));
-        }
+        });
     }
     public void loadLocale(String lang){
         if(messages.containsKey(lang)) return;
@@ -155,5 +164,16 @@ public class BukkitPlugin extends JavaPlugin implements Plugin {
         return locale ? messages.get(lang).getString(key) : getMessage(key);
     }
     public static String getMessage(String key){return messages.get(Locale.getDefault().getLanguage()).getString(key);}
-
+    public static String getPluginInfo(){
+        return "§6%s§r §ev§7%s§r".formatted(getPluginInfo("name"), getPluginInfo("version")) +
+                "\n§6author:§7%s §6version:§7%s".formatted(getPluginInfo("name")
+                        , getPluginInfo("author"), getPluginInfo("version"));
+    }
+    public void showPluginTitle(String lineTitleDisplay){
+        for(String str : LineFontGenerator.parseLineText(lineTitleDisplay)) {
+            logMsg("§6%s§r".formatted(str));
+        }
+        logMsg("§e%s §6author:§7%s §6version:§7%s".formatted(getPluginInfo("name")
+                , getPluginInfo("author"), getPluginInfo("version")));
+    }
 }

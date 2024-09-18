@@ -7,6 +7,8 @@ import java.util.logging.Logger;
 
 public interface Plugin extends Colors {
 
+    void initialization();
+
     static Logger getLogger() {
         return null;
     }

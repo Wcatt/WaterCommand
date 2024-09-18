@@ -1,10 +1,10 @@
 package waterfun.waterwood.watercommand;
 
-import me.waterwood.BukkitPlugin;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import me.waterwood.bukkit.BukkitPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
