@@ -165,15 +165,14 @@ public class BukkitPlugin extends JavaPlugin implements Plugin {
     }
     public static String getMessage(String key){return messages.get(Locale.getDefault().getLanguage()).getString(key);}
     public static String getPluginInfo(){
-        return "§6%s§r §ev§7%s§r".formatted(getPluginInfo("name"), getPluginInfo("version")) +
-                "\n§6author:§7%s §6version:§7%s".formatted(getPluginInfo("name")
-                        , getPluginInfo("author"), getPluginInfo("version"));
+        return "§6§l%s§r §ev§7%s§r".formatted(getPluginInfo("name"), getPluginInfo("version")) +
+                "§6§l by: §7%s".formatted( getPluginInfo("author"));
     }
     public void showPluginTitle(String lineTitleDisplay){
         for(String str : LineFontGenerator.parseLineText(lineTitleDisplay)) {
             logMsg("§6%s§r".formatted(str));
         }
-        logMsg("§e%s §6author:§7%s §6version:§7%s".formatted(getPluginInfo("name")
+        logMsg(" §e%s §6 Author:§7%s §6Version: §7%s".formatted(getPluginInfo("name")
                 , getPluginInfo("author"), getPluginInfo("version")));
     }
 }

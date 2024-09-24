@@ -11,11 +11,7 @@ public final class WaterCommand extends BukkitPlugin {
     @Override
     public void onEnable() {
         this.initialization();
-        for(String str : LineFontGenerator.parseLineText("WaterCMD")) {
-            logMsg("§6%s§r".formatted(str));
-        }
-        logMsg("§e%s §6author:§7%s §6version:§7%s".formatted(getPluginInfo("name")
-                , getPluginInfo("author"), getPluginInfo("version")));
+        this.showPluginTitle("WaterCMD");
         instance = this;
         this.loadConfig(false);
         this.checkUpdate("Wcatt","WaterCommand");
