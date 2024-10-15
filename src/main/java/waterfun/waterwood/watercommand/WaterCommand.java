@@ -1,10 +1,9 @@
 package waterfun.waterwood.watercommand;
 
 
-import me.waterwood.bukkit.Metrics;
 import org.bukkit.Bukkit;
-import org.waterwood.common.LineFontGenerator;
-import me.waterwood.bukkit.BukkitPlugin;
+import org.waterwood.plugin.bukkit.BukkitPlugin;
+import org.waterwood.plugin.bukkit.Metrics;
 
 public final class WaterCommand extends BukkitPlugin {
     private static BukkitPlugin instance;

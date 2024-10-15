@@ -1,7 +1,6 @@
 package waterfun.waterwood.watercommand;
 
 import me.clip.placeholderapi.PlaceholderAPI;
-import me.waterwood.bukkit.BukkitPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -9,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
+import org.waterwood.plugin.bukkit.BukkitPlugin;
 
 import java.util.Map;
 import java.util.Objects;

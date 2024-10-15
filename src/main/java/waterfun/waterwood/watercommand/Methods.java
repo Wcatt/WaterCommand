@@ -1,7 +1,7 @@
 package waterfun.waterwood.watercommand;
 
-import me.waterwood.bukkit.BukkitPlugin;
 import org.bukkit.Bukkit;
+import org.waterwood.plugin.bukkit.BukkitPlugin;
 
 import java.util.HashSet;
 import java.util.Map;
